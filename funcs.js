@@ -2,12 +2,15 @@ function getRandom(max, min = 0) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-function getWorkingDays(
-  startDate = new Date(2023, 01, 01),
-  endDate = new Date(2023, 12, 31)
-) {
+function getWorkingDays(month, year) {
+  // console.log("year", year, "month", month);
+  const startDate = new Date(year, month - 1, 1),
+    endDate = new Date(year, month - 1, daysInMonth(month, year));
   let result = 0;
   let currentDate = startDate;
+  // console.log(currentDate);
+  // console.log(endDate);
+
   while (currentDate <= endDate) {
     let weekDay = currentDate.getDay();
     if (weekDay != 0 && weekDay != 6) result++;
@@ -21,3 +24,7 @@ function daysInMonth(month, year) {
   return new Date(year, month, 0).getDate();
 }
 // console.log(daysInMonth(2, 1999));
+
+function chance() {
+  return Math.random().toFixed(1);
+}
