@@ -141,6 +141,7 @@ const cafe = new Cafe();
 const statistic = cafe.getStatistic();
 console.log(statistic);
 
+//отрисовка информации в HTML
 const cafeHTML = document.getElementById("root");
 
 const h2 = document.createElement("h1");
