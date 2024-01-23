@@ -1,9 +1,9 @@
 const dops = [
   { name: "булочка с сахаром", time: 10, price: 100 },
   { name: "сливки", time: 10, price: 50 },
-  { name: "пирожное Картошка", time: 10, price: 100 },
-  { name: "Торт", time: 10, price: 300 },
-  { name: "пирожное Корзинка", time: 10, price: 150 },
+  { name: 'пирожное "Картошка"', time: 10, price: 100 },
+  { name: 'торт "Наполеон"', time: 10, price: 300 },
+  { name: 'пирожное "Корзинка"', time: 10, price: 150 },
   { name: "круассан", time: 10, price: 80 },
   { name: "булочка с корицей", time: 10, price: 90 },
   { name: "венская булочка", time: 10, price: 70 },
@@ -11,11 +11,11 @@ const dops = [
   { name: "кекс", time: 10, price: 50 },
 ];
 const drinks = [
-  { name: "кофе Эспрессо", time: 10, price: 150 },
+  { name: 'кофе "Эспрессо"', time: 10, price: 150 },
   { name: "чай черный", time: 5, price: 100 },
   { name: "какао", time: 15, price: 120 },
-  { name: "кофе Американо", time: 7, price: 80 },
-  { name: "кофе Лате", time: 8, price: 90 },
+  { name: 'кофе "Американо"', time: 7, price: 80 },
+  { name: 'кофе "Лате"', time: 8, price: 90 },
   { name: "горячий шоколад", time: 20, price: 200 },
   { name: "чай зеленый", time: 11, price: 130 },
 ];
@@ -56,7 +56,7 @@ class Cafe {
   getDopsChance() {
     return chance() < 0.2;
   }
-
+  //формируем стстистику за день
   getDayStatistic(people = getRandom(100, 20)) {
     let timeOrders = 0;
     let countPeople = 0;
@@ -86,7 +86,7 @@ class Cafe {
     }
     this.people += countPeople;
   }
-
+  //формируем стстистику за месяц
   getMonthStatistic() {
     for (let i = 0; i < getWorkingDays(this.month, this.year); i++) {
       this.getDayStatistic();
@@ -122,6 +122,7 @@ class Cafe {
     this.drinks = [];
     this.dops = [];
   }
+  //формируем стстистику за год
   getYearStatistic() {
     for (let i = 1; i < 13; i++) {
       this.setMonth(i);
@@ -137,5 +138,145 @@ class Cafe {
 
 const cafe = new Cafe();
 
-// cafe.getYearStatistic();
-console.log(cafe.getStatistic());
+const statistic = cafe.getStatistic();
+console.log(statistic);
+
+const cafeHTML = document.getElementById("root");
+
+const h2 = document.createElement("h1");
+h2.innerText = "Статистика работы кафе за " + year + " г.";
+h2.style.display = "flex";
+h2.style.justifyContent = "center";
+
+cafeHTML.append(h2);
+cafeHTML.append(document.createElement("hr"));
+
+statistic.map((item) => {
+  const month = document.createElement("div");
+  month.innerText = item.month.toUpperCase();
+  month.style.display = "flex";
+  month.style.justifyContent = "center";
+  month.style.fontSize = "24px";
+
+  cafeHTML.append(month);
+
+  const wrapper = document.createElement("div");
+  wrapper.style.display = "flex";
+  wrapper.style.justifyContent = "space-around";
+
+  //вывод секции напитки
+  const drinks = document.createElement("div");
+  const drinksList = document.createElement("table");
+  const drinksHead = document.createElement("tr");
+  const drinkHeadTd = document.createElement("td");
+  drinkHeadTd.colSpan = 2;
+  drinkHeadTd.style.textAlign = "center";
+  drinkHeadTd.style.textDecoration = "underline";
+  drinkHeadTd.style.fontWeight = "700";
+
+  drinkHeadTd.innerHTML = "Напитки:";
+
+  drinksHead.append(drinkHeadTd);
+  drinksList.append(drinksHead);
+  Object.keys(item.drinks).map((drink) => {
+    const drinksListItem = document.createElement("tr");
+    const drinkName = document.createElement("td");
+    drinkName.innerText = drink;
+    drinksListItem.append(drinkName);
+    const drinkCol = document.createElement("td");
+    drinkCol.innerText = item.drinks[drink] + " шт";
+    drinksListItem.append(drinkCol);
+    drinksList.append(drinksListItem);
+  });
+  drinks.append(drinksList);
+  wrapper.append(drinks);
+  const dops = document.createElement("div");
+
+  //вывод секции дополнительно
+  const dopsList = document.createElement("table");
+  const dopsHead = document.createElement("tr");
+  const dopHeadTd = document.createElement("td");
+  dopHeadTd.colSpan = 2;
+  dopHeadTd.style.textAlign = "center";
+  dopHeadTd.style.textDecoration = "underline";
+  dopHeadTd.style.fontWeight = "700";
+  dopHeadTd.innerHTML = "Дополнительно:";
+  dopsHead.append(dopHeadTd);
+  dopsList.append(dopsHead);
+  Object.keys(item.dops).map((dop) => {
+    const dopsListItem = document.createElement("tr");
+    const dopName = document.createElement("td");
+    dopName.innerText = dop;
+    dopsListItem.append(dopName);
+    const dopCol = document.createElement("td");
+    dopCol.innerText = item.dops[dop] + " шт";
+    //  dopCol.innerText = dop;
+    dopsListItem.append(dopCol);
+    // dopsListItem.innerText = dop + " " + ;
+    dopsList.append(dopsListItem);
+  });
+  dops.append(dopsList);
+
+  // month.style.margin = "0 auto";
+  wrapper.append(dops);
+
+  cafeHTML.append(wrapper);
+  cafeHTML.append(document.createElement("hr"));
+  const wrapper2 = document.createElement("div");
+  wrapper2.style.display = "flex";
+  wrapper2.style.justifyContent = "space-evenly";
+
+  const people = document.createElement("div");
+  people.innerHTML = `Количество поесетителей за месяц: ${item.people} ч.`;
+  wrapper2.append(people);
+  const cash = document.createElement("div");
+  cash.innerHTML = `Выручка за месяц: ${item.cash} р.`;
+  wrapper2.append(cash);
+
+  cafeHTML.append(wrapper2);
+
+  cafeHTML.append(document.createElement("hr"));
+});
+
+// // const wrapper = document.createElement("div");
+// const table = document.createElement("table");
+// table.style.border = "2px grey solid";
+// const thead = document.createElement("thead");
+// const trH = document.createElement("th");
+// const tdH = document.createElement("td");
+// tdH.style.border = "1px grey solid";
+// trH.append(tdH);
+
+// //выводим названия месяцев
+// statistic.map((item) => {
+//   const td = document.createElement("td");
+//   td.innerText = item.month;
+//   td.style.border = "1px grey solid";
+//   trH.append(td);
+// });
+
+// const tdH1 = document.createElement("td");
+// tdH1.innerText = "ИТОГО";
+// trH.append(tdH1);
+// // const tdH2 = document.createElement("td");
+// // tdH2.innerText = "asdad";
+// // trH.append(tdH2);
+// thead.append(trH);
+
+// table.append(thead);
+
+// //выводим названия месяцев
+// statistic.map((month) => {
+//   const tr = document.createElement("tr");
+//   Object.keys(month.drinks).map((item) => {
+//     const td = document.createElement("td");
+//     td.innerText = item;
+//     td.style.border = "1px grey solid";
+//     tr.append(td);
+//   });
+
+//   table.append(tr);
+// });
+
+// // wrapper.append(table);
+// cafeHTML.append(table);
