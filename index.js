@@ -211,14 +211,11 @@ statistic.map((item) => {
     dopsListItem.append(dopName);
     const dopCol = document.createElement("td");
     dopCol.innerText = item.dops[dop] + " шт";
-    //  dopCol.innerText = dop;
     dopsListItem.append(dopCol);
-    // dopsListItem.innerText = dop + " " + ;
     dopsList.append(dopsListItem);
   });
   dops.append(dopsList);
 
-  // month.style.margin = "0 auto";
   wrapper.append(dops);
 
   cafeHTML.append(wrapper);
@@ -239,45 +236,19 @@ statistic.map((item) => {
   cafeHTML.append(document.createElement("hr"));
 });
 
-// // const wrapper = document.createElement("div");
-// const table = document.createElement("table");
-// table.style.border = "2px grey solid";
-// const thead = document.createElement("thead");
-// const trH = document.createElement("th");
-// const tdH = document.createElement("td");
-// tdH.style.border = "1px grey solid";
-// trH.append(tdH);
+// считаем общую выручку за год
+const totalCash = statistic.reduce((acc, item) => {
+  acc += item.cash;
+  return acc;
+}, 0);
 
-// //выводим названия месяцев
-// statistic.map((item) => {
-//   const td = document.createElement("td");
-//   td.innerText = item.month;
-//   td.style.border = "1px grey solid";
-//   trH.append(td);
-// });
+const total = document.createElement("div");
+total.style.display = "flex";
+total.style.marginTop = "20px";
+total.style.fontWeight = "700";
+total.style.fontSize = "24px";
 
-// const tdH1 = document.createElement("td");
-// tdH1.innerText = "ИТОГО";
-// trH.append(tdH1);
-// // const tdH2 = document.createElement("td");
-// // tdH2.innerText = "asdad";
-// // trH.append(tdH2);
-// thead.append(trH);
+total.style.justifyContent = "center";
 
-// table.append(thead);
-
-// //выводим названия месяцев
-// statistic.map((month) => {
-//   const tr = document.createElement("tr");
-//   Object.keys(month.drinks).map((item) => {
-//     const td = document.createElement("td");
-//     td.innerText = item;
-//     td.style.border = "1px grey solid";
-//     tr.append(td);
-//   });
-
-//   table.append(tr);
-// });
-
-// // wrapper.append(table);
-// cafeHTML.append(table);
+total.innerHTML = `Общий доход кафе за ${year} год: ${totalCash} р.`;
+cafeHTML.append(total);
